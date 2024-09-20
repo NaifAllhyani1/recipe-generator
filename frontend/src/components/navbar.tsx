@@ -10,7 +10,7 @@ export default function Navbar() {
           </span>
         </div>
 
-        <div className="flex justify-around gap-3 w-1/3">
+        <div className="flex justify-around w-1/3">
           <a href="#" className="text-gray-500 hover:text-orange-600 text-lg">
             {" "}
             Home
@@ -24,7 +24,7 @@ export default function Navbar() {
           </a>
           <a href="#" className="text-gray-500 hover:text-orange-600 text-lg ">
             {" "}
-            Recipes
+            Generate Recipes
           </a>
         </div>
 

@@ -3,6 +3,7 @@ import Navbar from "./components/navbar";
 import LandingPage from "./pages/landingPage/landing-page";
 import SignUpPage from "./pages/auth/Signup";
 import Login from "./pages/auth/login";
+import MyRecipes from "./pages/my-recipes/myRecipes";
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
       <Routes>
         {/* Define routes for LandingPage and SignupPage */}
         <Route path="/" element={<LandingPage />} />
+        <Route path="/my-recipes" element={<MyRecipes />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/login" element={<Login />} />
       </Routes>
