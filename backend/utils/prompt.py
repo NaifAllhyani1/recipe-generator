@@ -11,14 +11,18 @@ def generate_recipe_by_cuisine_prompt(cuisine: str, allergy: str = None) -> str:
     Create a dish following these guidelines:
     
     1. **Dish Name**: Provide a creative and authentic name for the dish based on the cuisine.
+    2. **Cuisine**: Use the provided cuisine type.
     2. **Dish Description**: Write a 2-3 sentence description of the dish.
+    3. **Ingredients**: Use the provided ingredients.
     3. **Cooking Steps**: Provide a detailed, step-by-step guide to cooking the dish.
 
     Please format your response in the following JSON structure:
     {
         "dish_name": "Your Dish Name Here",
+        "cuisine": "Your cuisine here",
         "dish_description": "Your dish description here.",
-        "cooking_steps": []
+        "ingredients": ["ingredient1", "ingredient2", "ingredient3"],
+        "cooking_steps": [{"step_number": 1, "step_description": "Step 1 description"}, {"step_number": 2, "step_description": "Step 2 description"}]
     }
     """
 
@@ -52,14 +56,18 @@ def generate_recipe_by_ingredients_prompt(
     Create a recipe following these guidelines:
     
     1. **Dish Name**: Suggest a creative and authentic name for the dish based on the ingredients and cuisine (if provided).
-    2. **Dish Description**: Write a 2-3 sentence description explaining the flavors, key ingredients, and how the dish relates to the provided cuisine or a generic style.
-    3. **Cooking Steps**: Provide clear, step-by-step instructions on how to make the dish. Use only the listed ingredients, and include preparation methods, cooking times, temperatures, and any special tips.
+    2. **Cuisine**: Use the provided cuisine type.
+    3. **Dish Description**: Write a 2-3 sentence description explaining the flavors, key ingredients, and how the dish relates to the provided cuisine or a generic style.
+    4. **Ingredients**: Use the provided ingredients.
+    5. **Cooking Steps**: Provide clear, step-by-step instructions on how to make the dish. Use only the listed ingredients, and include preparation methods, cooking times, temperatures, and any special tips.
     
     Please format your response in the following JSON structure:
     {
         "dish_name": "Your Dish Name Here",
+        "cuisine": "Your cuisine here",
         "dish_description": "Your dish description here.",
-        "cooking_steps": []
+        "ingredients": ["ingredient1", "ingredient2", "ingredient3"],
+        "cooking_steps": [{"step_number": 1, "step_description": "Step 1 description"}, {"step_number": 2, "step_description": "Step 2 description"}]
     }
     
     """

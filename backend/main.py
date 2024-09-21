@@ -15,7 +15,7 @@ def read_root():
 
 
 # Include all routers from the 'api/routers' directory
-app.include_router(recipe.router, prefix="/api")  # Changed this line
+app.include_router(recipe.router)  # Changed this line
 
 
 # Initialize the database
