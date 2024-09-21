@@ -42,6 +42,7 @@ async def generate_recipe(recipe: schemas.RecipeRequest):
 
 async def generate_recipe_by_cuisine(recipe: schemas.RecipeRequest) -> dict:
     prompt = generate_recipe_by_cuisine_prompt(recipe.cuisine, recipe.allergies)
+    
     # TODO: send request to generate recipe based on cuisine
     pass
 
