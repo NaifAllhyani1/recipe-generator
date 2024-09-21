@@ -1,32 +1,37 @@
 from fastapi import APIRouter, HTTPException, status, Depends
-import schemas
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List
 from services.recipe_generator import generate_recipe_from_prompt
 from database import get_session
 from sqlmodel import Session
 import logging
+import schemas
 
 router = APIRouter()
 logger = logging.getLogger("my_app")
+
 
 class RecipeData(BaseModel):
     id: int
     dish_name: str
     ingredients: List[str]
-    cuisine: Optional[str] = None
-    allergies: Optional[List[str]] = None
+    cuisine: str | None = None
+    allergies: List[str] | None = None
     dish_description: str
     cooking_steps: List[str]
-    image_url: Optional[str] = None
+    image_url: str | None = None
+
 
 class RecipeResponse(BaseModel):
     status: str
     message: str
-    data: Optional[RecipeData] = None
+    data: RecipeData | None = None
+
 
 @router.post("/generate-recipe", response_model=RecipeResponse)
-async def generate_recipe_endpoint(recipe: schemas.RecipeRequest, db: Session = Depends(get_session)):
+async def generate_recipe_endpoint(
+    recipe: schemas.RecipeRequest, db: Session = Depends(get_session)
+):
     if recipe.has_all_ingredients and not recipe.cuisine:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -56,6 +61,6 @@ async def generate_recipe_endpoint(recipe: schemas.RecipeRequest, db: Session = 
             allergies=db_recipe.allergies,
             dish_description=db_recipe.dish_description,
             cooking_steps=db_recipe.cooking_steps,
-            image_url=db_recipe.image_url
+            image_url=db_recipe.image_url,
         ),
     }
