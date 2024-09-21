@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from dotenv import load_dotenv
 from database import create_db_and_tables
 from api.routers import recipe  # Changed this line
+from api.routers import signup
 
 load_dotenv()
 
@@ -14,8 +15,8 @@ def read_root():
     return {"server": "running"}
 
 
-# Include all routers from the 'api/routers' directory
-app.include_router(recipe.router)  # Changed this line
+app.include_router(recipe.router)
+app.include_router(signup.router)
 
 
 # Initialize the database
