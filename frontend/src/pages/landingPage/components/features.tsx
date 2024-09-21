@@ -1,3 +1,4 @@
+import Feature from "./feature-item";
 
 export default function Featurs () {
 
