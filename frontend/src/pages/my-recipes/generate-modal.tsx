@@ -39,7 +39,7 @@ export function GenerateModal() {
             </div>
           ) : null}
           <div className="space-y-2">
-            <Label>Cuisine (optional)</Label>
+            <Label>Cuisine</Label>
             <Input
               placeholder="eg. Italian, Mexican, Chinese, Greek"
               className="w-full"
