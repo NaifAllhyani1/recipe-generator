@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from dotenv import load_dotenv
-from database import create_db_and_tables  # Corrected import path
-from api.routers.recipe import router as recipe_router  # Relative import for the router
+from database import create_db_and_tables
+from api.routers import recipe  # Changed this line
 
 load_dotenv()
 
@@ -15,7 +15,7 @@ def read_root():
 
 
 # Include all routers from the 'api/routers' directory
-app.include_router(recipe_router)
+app.include_router(recipe.router, prefix="/api")  # Changed this line
 
 
 # Initialize the database
