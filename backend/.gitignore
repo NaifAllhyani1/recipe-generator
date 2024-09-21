@@ -1,4 +1,14 @@
-.env
+# Virtual environment
 .venv/
-__pycache__
+
+# Python cache files
+__pycache__/
+*.py[cod]
+
+# Environment variables
+.env
+
+# Database file
 recipes_generator.db
+
+# Existing rules...
