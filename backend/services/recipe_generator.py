@@ -72,7 +72,7 @@ async def generate_recipe_image(description: str):
         response = client.images.generate(
             model="dall-e-3",
             prompt=f"A realistic, appetizing image of: {description}",
-            size="1024x1024",
+            size="300x300",
             quality="standard",
             n=1,
         )

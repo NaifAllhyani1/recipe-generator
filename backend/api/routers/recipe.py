@@ -93,3 +93,16 @@ async def get_recipe_by_id(recipe_id: int, db: Session = Depends(get_session)):
         "message": "Recipe fetched successfully",
         "data": recipe,
     }
+
+@router.get("/recipes")
+async def get_recipes(db: Session = Depends(get_session)):
+    try:
+        recipes = db.exec(select(Recipe)).all()
+        return {
+            "status": "success",
+            "message": "Recipes fetched successfully",
+            "data": recipes,
+        }
+    except Exception as e:
+        logger.error(f"Error in fetching recipes: {str(e)}")
+        raise HTTPException(status_code=500, detail={"status": "error", "message": f"Error fetching recipes: {str(e)}"})
