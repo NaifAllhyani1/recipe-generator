@@ -1,31 +1,5 @@
-import Feature, { FeatureProps } from "./feature-item";
 
-export default function Featurs() {
-
-  const features: FeatureProps[] = [
-    {
-      icon: "public/chef.png",
-      title: "Personalized Recipe Recommendations",
-      description: "Get personalized recipe recommendations based on your ingredients, preferences, and dietary restrictions. Let our AI chef inspire your next meal!",
-    },
-    {
-      icon: "public/fork.png",
-      title: "Ingredient-Based Search",
-      description: "Find recipes based on your ingredients. Discover new flavors and textures with our ingredient-based search feature. Discover new flavors and textures with our ingredient-based search feature.",
-    },
-    {
-      icon: "public/leaves.png",
-      title: "Dietary Restrictions",
-      description: "Unlock the power of your body with our innovative AI-powered platform. Our AI-powered platform makes cooking a whole lot easier."
-    },
-
-    {
-      icon: "public/clock.png",
-      title: "Quick and Easy Recipes",
-      description: "Find recipes that fit your schedule. Our AI-powered platform makes cooking a whole lot easier.",
-    }
-
-  ]
+export default function Featurs () {
 
 
   return (
@@ -45,14 +19,27 @@ export default function Featurs() {
 
           {/* Featurs */}
           <div className="grid grid-cols-2 gap-12 gap-x-48 place-items-center w-full">
-            {features.map((feature, index) => (
-              <Feature
-                key={index}
-                icon={feature.icon}
-                title={feature.title}
-                description={feature.description}
-              />
-            ))}
+      
+            <Feature
+              icon="public/chef.png"
+              title="Personalized Recipe Recommendations"
+              description="Get personalized recipe recommendations based on your ingredients, preferences, and dietary restrictions. Let our AI chef inspire your next meal!"
+            />
+            <Feature
+              icon="public/fork.png"
+              title="Ingredient-Based Search"
+              description="Find recipes based on your ingredients. Discover new flavors and textures with our ingredient-based search feature."
+            />
+            <Feature
+              icon="public/leaves.png"
+              title="Dietary Restrictions"
+              description="Unlock the power of your body with our innovative AI-powered platform. Our AI-powered platform makes cooking a whole lot easier."
+            />
+            <Feature
+              icon="public/clock.png"
+              title="Quick and Easy Recipes"
+              description="Find recipes that fit your schedule. Our AI-powered platform makes cooking a whole lot easier."
+            />
           </div>
         </div>
       </div>
