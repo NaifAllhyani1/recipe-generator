@@ -13,6 +13,13 @@ def generate_recipe_by_cuisine_prompt(cuisine: str, allergy: str = None) -> str:
     1. **Dish Name**: Provide a creative and authentic name for the dish based on the cuisine.
     2. **Dish Description**: Write a 2-3 sentence description of the dish.
     3. **Cooking Steps**: Provide a detailed, step-by-step guide to cooking the dish.
+
+    Please format your response in the following JSON structure:
+    {
+        "dish_name": "Your Dish Name Here",
+        "dish_description": "Your dish description here.",
+        "cooking_steps": []
+    }
     """
 
     return prompt
@@ -47,6 +54,14 @@ def generate_recipe_by_ingredients_prompt(
     1. **Dish Name**: Suggest a creative and authentic name for the dish based on the ingredients and cuisine (if provided).
     2. **Dish Description**: Write a 2-3 sentence description explaining the flavors, key ingredients, and how the dish relates to the provided cuisine or a generic style.
     3. **Cooking Steps**: Provide clear, step-by-step instructions on how to make the dish. Use only the listed ingredients, and include preparation methods, cooking times, temperatures, and any special tips.
+    
+    Please format your response in the following JSON structure:
+    {
+        "dish_name": "Your Dish Name Here",
+        "dish_description": "Your dish description here.",
+        "cooking_steps": []
+    }
+    
     """
 
     return prompt
