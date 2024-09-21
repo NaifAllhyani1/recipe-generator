@@ -1,36 +1,22 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, HTTPException, status
 import schemas
-import logging
 from pydantic import BaseModel
 from typing import List, Optional
-from utils.prompt import (
-    generate_recipe_by_ingredients_prompt,
-    generate_recipe_by_cuisine_prompt,
-)
-from openai import OpenAI
-from dotenv import load_dotenv
-import json
-
-load_dotenv()
-
-client = OpenAI()
+from services.recipe_generator import generate_recipe_from_prompt
+import logging
 
 router = APIRouter()
-
 logger = logging.getLogger("my_app")
-
 
 class RecipeData(BaseModel):
     dish_name: str
     dish_description: str
     cooking_steps: List[str]
 
-
 class RecipeResponse(BaseModel):
     status: str
     message: str
     data: Optional[RecipeData] = None
-
 
 @router.post("/generate-recipe", response_model=RecipeResponse)
 async def generate_recipe_endpoint(recipe: schemas.RecipeRequest):
@@ -57,26 +43,3 @@ async def generate_recipe_endpoint(recipe: schemas.RecipeRequest):
         "message": "Recipe generated successfully",
         "data": response,
     }
-
-
-async def generate_recipe_from_prompt(recipe: schemas.RecipeRequest):
-    prompt = (
-        generate_recipe_by_cuisine_prompt(recipe.cuisine, recipe.allergies)
-        if recipe.has_all_ingredients and recipe.cuisine
-        else generate_recipe_by_ingredients_prompt(recipe.ingredients, recipe.allergies)
-    )
-
-    try:
-        completion = client.chat.completions.create(
-            model="gpt-4",  # Correct model name
-            messages=[{"role": "user", "content": prompt}],
-        )
-    except Exception as e:
-        logger.error(f"API call error: {str(e)}")
-        raise HTTPException(status_code=500, detail="Error generating recipe from prompt")
-
-    generated_content = completion.choices[0].message.content
-
-   
-
-    return json.loads(generated_content)
