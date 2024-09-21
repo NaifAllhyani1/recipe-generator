@@ -3,9 +3,10 @@ from pydantic import BaseModel
 from typing import List
 from services.recipe_generator import generate_recipe_from_prompt
 from database import get_session
-from sqlmodel import Session
+from sqlmodel import Session, select
 import logging
 import schemas
+from models import Recipe
 
 router = APIRouter()
 logger = logging.getLogger("my_app")
@@ -27,7 +28,9 @@ class RecipeResponse(BaseModel):
 
 
 @router.post("/generate-recipe", response_model=RecipeResponse)
-async def generate_recipe_endpoint(recipe: schemas.RecipeRequest, db: Session = Depends(get_session)):
+async def generate_recipe_endpoint(
+    recipe: schemas.RecipeRequest, db: Session = Depends(get_session)
+):
     if recipe.has_all_ingredients and not recipe.cuisine:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -45,7 +48,9 @@ async def generate_recipe_endpoint(recipe: schemas.RecipeRequest, db: Session = 
         insert_recipe_to_db(res, db)
     except Exception as e:
         logger.error(f"Error in generating recipe: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Error generating recipe: {str(e)}")
+        raise HTTPException(
+            status_code=500, detail=f"Error generating recipe: {str(e)}"
+        )
 
     return {
         "status": "success",
@@ -59,3 +64,24 @@ def insert_recipe_to_db(recipe: RecipeData, db: Session):
     db.commit()
     db.refresh(recipe)
     return recipe
+
+
+@router.get("/recipes/{recipe_id}", response_model=RecipeResponse)
+async def get_recipe_by_id(recipe_id: int, db: Session = Depends(get_session)):
+    try:
+        query = select(Recipe).where(Recipe.id == recipe_id)
+        recipe = db.exec(query).first()
+
+        if not recipe:
+            raise HTTPException(status_code=404, detail={"status": "error", "message": "Recipe not found"})
+        
+    except Exception as e:
+        logger.error(f"Error in fetching recipe: {str(e)}")
+        raise HTTPException(status_code=500, detail={"status": "error", "message": str(e)})
+    
+
+    return {
+        "status": "success",
+        "message": "Recipe fetched successfully",
+        "data": recipe,
+    }
