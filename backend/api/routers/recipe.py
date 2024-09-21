@@ -1,9 +1,9 @@
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Depends
 from pydantic import BaseModel
 from typing import List
 from services.recipe_generator import generate_recipe_from_prompt
-# from database import get_session
-# from sqlmodel import Session
+from database import get_session
+from sqlmodel import Session
 import logging
 import schemas
 
@@ -17,6 +17,7 @@ class RecipeData(BaseModel):
     dish_description: str | None = None
     ingredients: List[str] | None = None
     cooking_steps: List[dict] | None = None
+    image_url: str | None = None
 
 
 class RecipeResponse(BaseModel):
@@ -26,7 +27,7 @@ class RecipeResponse(BaseModel):
 
 
 @router.post("/generate-recipe", response_model=RecipeResponse)
-async def generate_recipe_endpoint(recipe: schemas.RecipeRequest):
+async def generate_recipe_endpoint(recipe: schemas.RecipeRequest, db: Session = Depends(get_session)):
     if recipe.has_all_ingredients and not recipe.cuisine:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -40,7 +41,8 @@ async def generate_recipe_endpoint(recipe: schemas.RecipeRequest):
         )
 
     try:
-        res = await generate_recipe_from_prompt(recipe)
+        res = await generate_recipe_from_prompt(recipe, db)
+        insert_recipe_to_db(res, db)
     except Exception as e:
         logger.error(f"Error in generating recipe: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Error generating recipe: {str(e)}")
@@ -50,3 +52,10 @@ async def generate_recipe_endpoint(recipe: schemas.RecipeRequest):
         "message": "Recipe generated successfully",
         "data": res,
     }
+
+
+def insert_recipe_to_db(recipe: RecipeData, db: Session):
+    db.add(recipe)
+    db.commit()
+    db.refresh(recipe)
+    return recipe
