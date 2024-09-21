@@ -34,13 +34,19 @@ async def generate_recipe_endpoint(
     if recipe.has_all_ingredients and not recipe.cuisine:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Cuisine is required if all ingredients are selected",
+            detail={
+                "status": "error",
+                "message": "Cuisine is required if all ingredients are selected",
+            },
         )
 
     if not recipe.ingredients and not recipe.has_all_ingredients:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="At least one ingredient is required",
+            detail={
+                "status": "error",
+                "message": "Ingredients are required if all ingredients are not selected",
+            },
         )
 
     try:
@@ -49,7 +55,7 @@ async def generate_recipe_endpoint(
     except Exception as e:
         logger.error(f"Error in generating recipe: {str(e)}")
         raise HTTPException(
-            status_code=500, detail=f"Error generating recipe: {str(e)}"
+            status_code=500, detail={"status": "error", "message":f"Error generating recipe: {str(e)}"}
         )
 
     return {
@@ -77,8 +83,10 @@ async def get_recipe_by_id(recipe_id: int, db: Session = Depends(get_session)):
         
     except Exception as e:
         logger.error(f"Error in fetching recipe: {str(e)}")
-        raise HTTPException(status_code=500, detail={"status": "error", "message": str(e)})
-    
+        raise HTTPException(status_code=500, detail={
+            "status": "error",
+            "message": "An unexpected error occurred while fetching the recipe. Please try again later."
+        })    
 
     return {
         "status": "success",
