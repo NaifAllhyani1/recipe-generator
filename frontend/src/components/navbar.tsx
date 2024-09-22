@@ -2,6 +2,7 @@ import { useState } from "react";
 // import { Button } from "./ui/button";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
 import { useAuth, useUser } from "@clerk/clerk-react";
+import { Button } from "./ui/button";
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { isSignedIn } = useAuth();
@@ -20,7 +21,9 @@ export default function Navbar() {
 
         <div className="flex items-center lg:order-2">
           <SignedOut>
-            <SignInButton />
+            <SignInButton>
+              <Button className="bg-orange-600 hover:bg-orange-500">Sign In</Button>
+            </SignInButton>
           </SignedOut>
           <SignedIn>
             <UserButton />
