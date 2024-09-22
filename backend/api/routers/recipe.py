@@ -33,7 +33,6 @@ async def generate_recipe_endpoint(
     recipe: schemas.RecipeRequest, db: Session = Depends(get_session)
 ):
 
-
     res = await generate_recipe_from_prompt(recipe, db)
     insert_recipe_to_db(res, db)
     return {
@@ -92,7 +91,8 @@ async def get_recipe_by_id(recipe_id: int, db: Session = Depends(get_session)):
 @router.get("/recipes")
 async def get_recipes(db: Session = Depends(get_session)):
     try:
-        recipes = db.exec(select(Recipe)).all()
+        # reverse order
+        recipes = db.exec(select(Recipe).order_by(Recipe.id.desc())).all()
         return {
             "status": "success",
             "message": "Recipes fetched successfully",
