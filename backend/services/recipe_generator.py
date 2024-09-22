@@ -21,10 +21,11 @@ load_dotenv()
 async def generate_recipe_from_prompt(recipe, db: Session):
     if recipe.has_all_ingredients and recipe.cuisine:
         prompt = generate_recipe_by_cuisine_prompt(recipe.cuisine, recipe.allergies)
-    else:
+   
+    if not recipe.has_all_ingredients and recipe.ingredients:
         prompt = generate_recipe_by_ingredients_prompt(
             recipe.ingredients, recipe.allergies, recipe.cuisine
-        )
+    )
 
     try:
         # Generate recipe from OpenAI
