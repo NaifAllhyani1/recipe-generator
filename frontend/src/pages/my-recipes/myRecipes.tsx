@@ -1,6 +1,13 @@
+import { RedirectToSignIn, useAuth } from "@clerk/clerk-react";
 import { GenerateModal } from "./generate-modal";
 
 export default function MyRecipes() {
+  // const [data, setData] = useState<any>(null);
+  const { isSignedIn } = useAuth();
+  if (!isSignedIn) {
+    return <RedirectToSignIn />;
+  }
+
   return (
     <main className=" bg-orange-200 min-h-screen p-4 sm:p-6 lg:p-8">
       <div className="container mx-auto">
@@ -8,7 +15,7 @@ export default function MyRecipes() {
           <h1 className="text-3xl sm:text-4xl font-bold text-gray-800">
             My Recipes
           </h1>
-          <GenerateModal />
+          <GenerateModal  />
         </div>
 
         <div className="bg-white rounded-lg shadow-md p-8 flex flex-col items-center justify-center min-h-[300px]">

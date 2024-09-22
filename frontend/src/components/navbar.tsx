@@ -1,9 +1,14 @@
 import { useState } from "react";
-import { Button } from "./ui/button";
-
+// import { Button } from "./ui/button";
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
+import { useAuth, useUser } from "@clerk/clerk-react";
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { isSignedIn } = useAuth();
+  const { user } = useUser();
 
+  console.log(user?.id);
+  console.log(isSignedIn);
   return (
     <nav className="flex items-center justify-center bg-orange-200">
       <main className="container flex flex-wrap items-center justify-between bg-white px-4 sm:px-8 py-4 border rounded-xl shadow-sm m-2">
@@ -14,9 +19,12 @@ export default function Navbar() {
         </div>
 
         <div className="flex items-center lg:order-2">
-          <Button className="bg-orange-600 font-medium hover:bg-orange-500">
-            Login
-          </Button>
+          <SignedOut>
+            <SignInButton />
+          </SignedOut>
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
           {/* Hamburger menu for mobile */}
           <button
             className="lg:hidden text-orange-600 ml-4"
@@ -50,12 +58,14 @@ export default function Navbar() {
             >
               Community Recipes
             </a>
-            <a
-              href="/my-recipes"
-              className="text-gray-500 hover:text-orange-600 text-lg py-2 lg:py-0 lg:px-4"
-            >
-              Generate Recipes
-            </a>
+            <SignedIn>
+              <a
+                href="/my-recipes"
+                className="text-gray-500 hover:text-orange-600 text-lg py-2 lg:py-0 lg:px-4"
+              >
+                Generate Recipes
+              </a>
+            </SignedIn>
           </div>
         </div>
       </main>
