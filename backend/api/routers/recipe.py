@@ -19,6 +19,7 @@ class RecipeData(BaseModel):
     ingredients: List[str] | None = None
     cooking_steps: List[dict] | None = None
     image_url: str | None = None
+    user_id: str
 
 
 class RecipeResponse(BaseModel):

@@ -7,6 +7,7 @@ class RecipeRequest(BaseModel):
     cuisine: str | None = None
     allergies: List[str] | None = None
     has_all_ingredients: bool
+    user_id: str
 
 
 class UserRequest(BaseModel):

@@ -54,6 +54,7 @@ async def generate_recipe_from_prompt(recipe, db: Session):
             ingredients=recipe_data["ingredients"],
             cooking_steps=recipe_data["cooking_steps"],
             image_url=image_url,
+            user_id=recipe.user_id,
         )
         
     
