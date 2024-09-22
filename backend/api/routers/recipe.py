@@ -32,33 +32,10 @@ class RecipeResponse(BaseModel):
 async def generate_recipe_endpoint(
     recipe: schemas.RecipeRequest, db: Session = Depends(get_session)
 ):
-    if recipe.has_all_ingredients and not recipe.cuisine:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail={
-                "status": "error",
-                "message": "Cuisine is required if all ingredients are selected",
-            },
-        )
 
-    if not recipe.ingredients and not recipe.has_all_ingredients:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail={
-                "status": "error",
-                "message": "Ingredients are required if all ingredients are not selected",
-            },
-        )
 
-    try:
-        res = await generate_recipe_from_prompt(recipe, db)
-        insert_recipe_to_db(res, db)
-    except Exception as e:
-        logger.error(f"Error in generating recipe: {str(e)}")
-        raise HTTPException(
-            status_code=500, detail={"status": "error", "message":f"Error generating recipe: {str(e)}"}
-        )
-
+    res = await generate_recipe_from_prompt(recipe, db)
+    insert_recipe_to_db(res, db)
     return {
         "status": "success",
         "message": "Recipe generated successfully",
@@ -66,11 +43,21 @@ async def generate_recipe_endpoint(
     }
 
 
+
+
+
 def insert_recipe_to_db(recipe: RecipeData, db: Session):
-    db.add(recipe)
-    db.commit()
-    db.refresh(recipe)
-    return recipe
+    try:
+        db.add(recipe)
+        db.commit()
+        db.refresh(recipe)
+        return recipe
+    except Exception as e:
+        logger.error(f"Error in inserting recipe to db: {str(e)}")
+        raise HTTPException(
+            status_code=500,
+            detail={"status": "error", "message": f"Error inserting recipe to db: {str(e)}"},
+        )
 
 
 @router.get("/recipes/{recipe_id}", response_model=RecipeResponse)
@@ -80,20 +67,27 @@ async def get_recipe_by_id(recipe_id: int, db: Session = Depends(get_session)):
         recipe = db.exec(query).first()
 
         if not recipe:
-            raise HTTPException(status_code=404, detail={"status": "error", "message": "Recipe not found"})
-        
+            raise HTTPException(
+                status_code=404,
+                detail={"status": "error", "message": "Recipe not found"},
+            )
+
     except Exception as e:
         logger.error(f"Error in fetching recipe: {str(e)}")
-        raise HTTPException(status_code=500, detail={
-            "status": "error",
-            "message": "An unexpected error occurred while fetching the recipe. Please try again later."
-        })    
+        raise HTTPException(
+            status_code=500,
+            detail={
+                "status": "error",
+                "message": "An unexpected error occurred while fetching the recipe. Please try again later.",
+            },
+        )
 
     return {
         "status": "success",
         "message": "Recipe fetched successfully",
         "data": recipe,
     }
+
 
 @router.get("/recipes")
 async def get_recipes(db: Session = Depends(get_session)):
@@ -106,4 +100,7 @@ async def get_recipes(db: Session = Depends(get_session)):
         }
     except Exception as e:
         logger.error(f"Error in fetching recipes: {str(e)}")
-        raise HTTPException(status_code=500, detail={"status": "error", "message": f"Error fetching recipes: {str(e)}"})
+        raise HTTPException(
+            status_code=500,
+            detail={"status": "error", "message": f"Error fetching recipes: {str(e)}"},
+        )

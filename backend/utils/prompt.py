@@ -24,6 +24,8 @@ def generate_recipe_by_cuisine_prompt(cuisine: str, allergy: str = None) -> str:
         "ingredients": ["ingredient1", "ingredient2", "ingredient3"],
         "cooking_steps": [{"step_number": 1, "step_description": "Step 1 description"}, {"step_number": 2, "step_description": "Step 2 description"}]
     }
+
+    Ensure that your response is valid JSON.
     """
 
     return prompt
@@ -69,6 +71,8 @@ def generate_recipe_by_ingredients_prompt(
         "ingredients": ["ingredient1", "ingredient2", "ingredient3"],
         "cooking_steps": [{"step_number": 1, "step_description": "Step 1 description"}, {"step_number": 2, "step_description": "Step 2 description"}]
     }
+
+    Ensure that your response is valid JSON.
     
     """
 

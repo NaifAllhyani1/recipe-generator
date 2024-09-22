@@ -31,40 +31,42 @@ async def generate_recipe_from_prompt(recipe, db: Session):
         completion = client.chat.completions.create(
             model="gpt-4o",
             messages=[{"role": "user", "content": prompt}],
+            response_format={ "type": "json_object" },
         )
-
-        generated_content = completion.choices[0].message.content
-
-        # Check for empty content
-        if not generated_content:
-            logger.error("Received empty content from OpenAI.")
-            raise HTTPException(
-                status_code=500, detail="Received empty content from OpenAI."
-            )
-
-        recipe_data = json.loads(generated_content)
-
-        image_url = await generate_recipe_image(recipe_data["dish_description"])
-     
-     
-        db_recipe = Recipe(
-            dish_name=recipe_data["dish_name"],
-            cuisine=recipe_data["cuisine"],
-            dish_description=recipe_data["dish_description"],
-            ingredients=recipe_data["ingredients"],
-            cooking_steps=recipe_data["cooking_steps"],
-            image_url=image_url,
-            user_id=recipe.user_id,
-        )
-        
-    
-        return db_recipe
 
     except Exception as e:
         logger.error(f"Failed to generate recipe from OpenAI: {str(e)}")
         raise HTTPException(
             status_code=500, detail=f"Error generating recipe from OpenAI: {str(e)}"
         )
+
+    generated_content = completion.choices[0].message.content
+    print("Raw response:", generated_content)
+    print("Raw response length:", len(generated_content))
+    generated_content = generated_content.strip()
+    print("Trimmed response length:", len(generated_content))
+
+    try:
+        recipe_data = json.loads(generated_content)
+    except json.JSONDecodeError as e:
+        logger.error(f"Failed to parse JSON: {str(e)}")
+        raise HTTPException(
+            status_code=500, detail=f"Error parsing JSON: {str(e)}"
+        )
+
+    image_url = await generate_recipe_image(recipe_data["dish_description"])
+
+    db_recipe = Recipe(
+        dish_name=recipe_data["dish_name"],
+        cuisine=recipe_data["cuisine"],
+        dish_description=recipe_data["dish_description"],
+        ingredients=recipe_data["ingredients"],
+        cooking_steps=recipe_data["cooking_steps"],
+        image_url=image_url,
+        user_id=recipe.user_id,
+    )
+
+    return db_recipe
 
 
 # Generate image based on the recipe description
@@ -73,7 +75,7 @@ async def generate_recipe_image(description: str):
         response = client.images.generate(
             model="dall-e-3",
             prompt=f"A realistic, appetizing image of: {description}",
-            size="300x300",
+            size="1024x1024",
             quality="standard",
             n=1,
         )
