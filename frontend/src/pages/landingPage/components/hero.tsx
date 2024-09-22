@@ -16,7 +16,7 @@ export default function Hero() {
           </p>
           <div className="flex gap-4">
             <Button className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-orange-600 hover:bg-orange-700 md:py-4 md:text-lg md:px-10">
-              Start Cooking
+              <a href="/my-recipes">Start Cooking</a>
             </Button>
             <Button
               variant="outline"

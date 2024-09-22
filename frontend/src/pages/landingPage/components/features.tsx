@@ -22,22 +22,22 @@ export default function Featurs () {
           <div className="grid grid-cols-2 gap-12 gap-x-48 place-items-center w-full">
       
             <Feature
-              icon="public/chef.png"
+              icon="/chef.png"
               title="Personalized Recipe Recommendations"
               description="Get personalized recipe recommendations based on your ingredients, preferences, and dietary restrictions. Let our AI chef inspire your next meal!"
             />
             <Feature
-              icon="public/fork.png"
+              icon="/fork.png"
               title="Ingredient-Based Search"
               description="Find recipes based on your ingredients. Discover new flavors and textures with our ingredient-based search feature."
             />
             <Feature
-              icon="public/leaves.png"
+              icon="/leaves.png"
               title="Dietary Restrictions"
               description="Unlock the power of your body with our innovative AI-powered platform. Our AI-powered platform makes cooking a whole lot easier."
             />
             <Feature
-              icon="public/clock.png"
+              icon="/clock.png"
               title="Quick and Easy Recipes"
               description="Find recipes that fit your schedule. Our AI-powered platform makes cooking a whole lot easier."
             />
