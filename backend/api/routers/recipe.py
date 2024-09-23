@@ -28,6 +28,14 @@ class RecipeResponse(BaseModel):
     data: RecipeData | None = None
 
 
+class UserRecipesRequest(BaseModel):
+    user_id: str
+
+class RecipeByUserResponse(BaseModel):
+    status: str
+    message: str
+    data: List[Recipe]
+
 @router.post("/generate-recipe", response_model=RecipeResponse)
 async def generate_recipe_endpoint(
     recipe: schemas.RecipeRequest, db: Session = Depends(get_session)
@@ -42,24 +50,7 @@ async def generate_recipe_endpoint(
     }
 
 
-
-
-
-def insert_recipe_to_db(recipe: RecipeData, db: Session):
-    try:
-        db.add(recipe)
-        db.commit()
-        db.refresh(recipe)
-        return recipe
-    except Exception as e:
-        logger.error(f"Error in inserting recipe to db: {str(e)}")
-        raise HTTPException(
-            status_code=500,
-            detail={"status": "error", "message": f"Error inserting recipe to db: {str(e)}"},
-        )
-
-
-@router.get("/recipes/{recipe_id}", response_model=RecipeResponse)
+@router.get("/recipe/id/{recipe_id}", response_model=RecipeResponse)
 async def get_recipe_by_id(recipe_id: int, db: Session = Depends(get_session)):
     try:
         query = select(Recipe).where(Recipe.id == recipe_id)
@@ -88,6 +79,31 @@ async def get_recipe_by_id(recipe_id: int, db: Session = Depends(get_session)):
     }
 
 
+@router.post("/recipes/user", response_model=RecipeByUserResponse)
+async def get_recipes_by_user_id(
+    user: UserRecipesRequest, db: Session = Depends(get_session)
+):
+    print("user_id", user)
+    try:
+        query = select(Recipe).where(Recipe.user_id == user.user_id) 
+        recipes = db.exec(query).all()
+    except Exception as e:
+        logger.error(f"Error in fetching recipes: {str(e)}")
+        raise HTTPException(
+            status_code=500,
+            detail={
+                "status": "error",
+                "message": "An unexpected error occurred while fetching the recipes. Please try again later."+str(e),
+            },
+        )
+
+    return {
+        "status": "success",
+        "message": "Recipes fetched successfully",
+        "data": recipes,
+    }
+
+
 @router.get("/recipes")
 async def get_recipes(db: Session = Depends(get_session)):
     try:
@@ -103,4 +119,21 @@ async def get_recipes(db: Session = Depends(get_session)):
         raise HTTPException(
             status_code=500,
             detail={"status": "error", "message": f"Error fetching recipes: {str(e)}"},
+        )
+
+
+def insert_recipe_to_db(recipe: RecipeData, db: Session):
+    try:
+        db.add(recipe)
+        db.commit()
+        db.refresh(recipe)
+        return recipe
+    except Exception as e:
+        logger.error(f"Error in inserting recipe to db: {str(e)}")
+        raise HTTPException(
+            status_code=500,
+            detail={
+                "status": "error",
+                "message": f"Error inserting recipe to db: {str(e)}",
+            },
         )

@@ -33,12 +33,21 @@ export default function MyRecipes() {
   const [recipe, setRecipes] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState(false);
   const [loadingGenerate, setLoadingGenerate] = useState(false);
+  const { userId } = useAuth();
 
   useEffect(() => {
     const fetchRecipes = async () => {
       setLoading(true);
+      console.log("userId in MyRecipes", userId);
+
       try {
-        const response = await fetch("http://127.0.0.1:8000/recipes");
+        const response = await fetch("http://127.0.0.1:8000/recipes/user", {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ user_id: userId }),
+        });
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -52,7 +61,7 @@ export default function MyRecipes() {
       }
     };
     fetchRecipes();
-  }, []);
+  }, [userId]);
 
   if (!isSignedIn) {
     return <RedirectToSignIn />;
