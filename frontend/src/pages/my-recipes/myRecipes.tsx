@@ -1,16 +1,9 @@
 import { RedirectToSignIn, useAuth } from "@clerk/clerk-react";
 import { GenerateModal } from "./generate-modal";
 import { useEffect, useState } from "react";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import CardSkeleton from "./card-skeleton";
+import CardSkeleton from "../../components/ui/card-skeleton";
 import LoadingScreen from "@/components/loading-screen";
+import CardItem from "@/components/card-item";
 
 export type CookingStep = {
   step_number: number;
@@ -103,30 +96,9 @@ export default function MyRecipes() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 bg-white p-4 rounded-lg">
           {loading && <LoadingScreen />}
           {loadingGenerate && <CardSkeleton />}
+
           {recipe.map((recipe) => (
-            <Card key={recipe.id} className="flex flex-col justify-between">
-              <CardHeader>
-                <img
-                  src={recipe?.image_url!}
-                  alt={recipe?.dish_name}
-                  className="w-full h-48 object-cover rounded-lg"
-                />
-              </CardHeader>
-              <CardContent className="space-y-2 ">
-                <CardTitle className="text-lg font-semibold">
-                  {recipe.dish_name}
-                </CardTitle>
-                <p className="text-sm text-gray-500">
-                  {recipe.dish_description}
-                </p>
-              </CardContent>
-              <CardFooter className="flex justify-between">
-                <p className="text-sm text-gray-500">{recipe.cuisine}</p>
-                <Button className="bg-orange-600 hover:bg-orange-500" size="sm">
-                  View Recipe
-                </Button>
-              </CardFooter>
-            </Card>
+            <CardItem key={recipe.id} recipe={recipe} />
           ))}
         </div>
       </div>

@@ -56,7 +56,7 @@ export default function Navbar() {
               Features
             </a>
             <a
-              href="/#features"
+              href="/community-recipes"
               className="text-gray-500 hover:text-orange-600 text-lg py-2 lg:py-0 lg:px-4"
             >
               Community Recipes

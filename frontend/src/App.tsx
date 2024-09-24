@@ -4,6 +4,7 @@ import LandingPage from "./pages/landingPage/landing-page";
 import SignUpPage from "./pages/auth/Signup";
 import Login from "./pages/auth/login";
 import MyRecipes from "./pages/my-recipes/myRecipes";
+import CommunityRecipes from "./pages/community-recipes";
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
         <Route path="/my-recipes" element={<MyRecipes />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/community-recipes" element={<CommunityRecipes />} />
       </Routes>
     </Router>
   );
