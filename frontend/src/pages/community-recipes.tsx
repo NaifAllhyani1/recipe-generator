@@ -33,7 +33,7 @@ export default function CommunityRecipes() {
     <main className=" bg-orange-200 min-h-screen p-4 sm:p-6 lg:p-8">
       <div className="container mx-auto">
         <h1 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-6 ">
-          My Recipes
+          Community Recipes
         </h1>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 bg-white p-4 rounded-lg ">
