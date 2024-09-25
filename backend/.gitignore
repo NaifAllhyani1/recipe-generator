@@ -12,3 +12,4 @@ __pycache__/
 recipes_generator.db
 
 # Existing rules...
+images/
