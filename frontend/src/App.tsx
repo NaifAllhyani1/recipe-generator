@@ -10,9 +10,7 @@ function App() {
   console.log(location);
   return (
     <Router>
-      {location!== "/signup" && location !== "/login" && (
         <Navbar />
-      )}
       <Routes>
         {/* Define routes for LandingPage and SignupPage */}
         <Route path="/" element={<LandingPage />} />
