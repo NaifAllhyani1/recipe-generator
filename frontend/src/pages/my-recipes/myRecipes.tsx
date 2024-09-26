@@ -34,7 +34,7 @@ export default function MyRecipes() {
       console.log("userId in MyRecipes", userId);
 
       try {
-        const response = await fetch("http://127.0.0.1:8000/recipes/user", {
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/recipes/user`, {
           method: "post",
           headers: {
             "Content-Type": "application/json",
