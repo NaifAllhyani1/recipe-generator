@@ -1,5 +1,4 @@
 import { Recipe } from "@/pages/my-recipes/myRecipes";
-import { Button } from "./ui/button";
 import {
   Card,
   CardContent,
@@ -8,6 +7,7 @@ import {
   CardTitle,
 } from "./ui/card";
 import { Loader2 } from "lucide-react";
+import RecipeDetailsDialog from "./recipe-details-dialog";
 
 export default function CardItem({ recipe }: { recipe: Recipe }) {
   console.log(`../../../backend${recipe?.image_url!}`);
@@ -30,9 +30,9 @@ export default function CardItem({ recipe }: { recipe: Recipe }) {
       </CardContent>
       <CardFooter className="flex justify-between">
         <p className="text-sm text-gray-500">{recipe.cuisine}</p>
-        <Button className="bg-orange-600 hover:bg-orange-500" size="sm">
-          View Recipe
-        </Button>
+       
+        {/* a button to view the recipe details */}
+        <RecipeDetailsDialog recipe={recipe} />
       </CardFooter>
     </Card>
   );
