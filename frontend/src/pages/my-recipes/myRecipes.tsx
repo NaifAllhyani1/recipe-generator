@@ -23,13 +23,13 @@ export type Recipe = {
 };
 
 export default function MyRecipes() {
-  const { isSignedIn } = useAuth();
+  const { isSignedIn, userId} = useAuth();
   const [recipe, setRecipes] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState(false);
   const [loadingGenerate, setLoadingGenerate] = useState(false);
-  const { userId } = useAuth();
-
+ 
   useEffect(() => {
+
     const fetchRecipes = async () => {
       setLoading(true);
 
