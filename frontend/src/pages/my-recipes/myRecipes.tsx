@@ -31,7 +31,6 @@ export default function MyRecipes() {
   useEffect(() => {
     const fetchRecipes = async () => {
       setLoading(true);
-      console.log("userId in MyRecipes", userId);
 
       try {
         const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/recipes/user`, {
@@ -45,7 +44,6 @@ export default function MyRecipes() {
           throw new Error("Network response was not ok");
         }
         const data = await response.json();
-        console.log(data);
         setRecipes(data.data);
       } catch (error) {
         console.error("Failed to fetch recipes:", error);

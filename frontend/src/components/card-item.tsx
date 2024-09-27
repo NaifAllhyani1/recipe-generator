@@ -10,7 +10,6 @@ import { Loader2 } from "lucide-react";
 import RecipeDetailsDialog from "./recipe-details-dialog";
 
 export default function CardItem({ recipe }: { recipe: Recipe }) {
-  console.log(`../../../backend${recipe?.image_url!}`);
   return (
     <Card className="flex flex-col justify-between">
       <CardHeader>

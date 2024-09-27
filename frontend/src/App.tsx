@@ -7,7 +7,6 @@ import CommunityRecipes from "./pages/community-recipes";
 
 function App() {
   const location = window.location.pathname;
-  console.log(location);
   return (
     <Router>
         <Navbar />

@@ -8,8 +8,6 @@ export default function Navbar() {
   const { isSignedIn } = useAuth();
   const { user } = useUser();
 
-  console.log(user?.id);
-  console.log(isSignedIn);
   return (
     <nav className="flex items-center justify-center bg-orange-200">
       <main className="container flex flex-wrap items-center justify-between bg-white px-4 sm:px-8 py-4 border rounded-xl shadow-sm m-2">
