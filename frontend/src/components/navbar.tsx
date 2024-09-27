@@ -10,7 +10,7 @@ export default function Navbar() {
       <main className="container flex flex-wrap items-center justify-between bg-white px-4 sm:px-8 py-4 border rounded-xl shadow-sm m-2">
         <div className="flex items-center flex-shrink-0">
           <span className="font-semibold text-2xl sm:text-3xl tracking-tight text-orange-600">
-            FoodieAI
+            <a href="/">FoodieAI</a>
           </span>
         </div>
 
