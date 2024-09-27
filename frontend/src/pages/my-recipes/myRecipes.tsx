@@ -75,7 +75,7 @@ export default function MyRecipes() {
           />
         </div>
 
-        {recipe.length === 0 && (
+        {recipe.length === 0 && !loadingGenerate ? (
           <div className="bg-white rounded-lg shadow-md p-8 flex flex-col items-center justify-center min-h-[300px]">
             <h2 className="text-2xl font-semibold text-gray-600 mb-2">
               You have no recipes yet
@@ -90,17 +90,16 @@ export default function MyRecipes() {
               recipes={recipe}
             />
           </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 bg-white p-4 rounded-lg">
+            {loading && <LoadingScreen />}
+            {loadingGenerate && <CardSkeleton />}
+
+            {recipe.map((recipe) => (
+              <CardItem key={recipe.id} recipe={recipe} />
+            ))}
+          </div>
         )}
-
-        {/* display recipes */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 bg-white p-4 rounded-lg">
-          {loading && <LoadingScreen />}
-          {loadingGenerate && <CardSkeleton />}
-
-          {recipe.map((recipe) => (
-            <CardItem key={recipe.id} recipe={recipe} />
-          ))}
-        </div>
       </div>
     </main>
   );

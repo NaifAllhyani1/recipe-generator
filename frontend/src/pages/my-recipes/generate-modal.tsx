@@ -41,6 +41,7 @@ export function GenerateModal({
   recipes: Recipe[];
 }) {
   const [hasAllIngredients, setHasAllIngredients] = useState(false);
+  const [open, setOpen] = useState(false);
   const { user } = useUser();
   const [formData, setFormData] = useState<FormData>({
     ingredients: null,
@@ -127,7 +128,7 @@ export function GenerateModal({
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
           className="bg-orange-600 hover:bg-orange-500"
@@ -213,7 +214,7 @@ export function GenerateModal({
 
           {/* add a submit button */}
           <DialogFooter>
-            <Button type="submit" className="bg-orange-600 hover:bg-orange-500">
+            <Button type="submit" className="bg-orange-600 hover:bg-orange-500" disabled={loadingGenerate} onClick={() => setOpen(false)}>
               Generate
             </Button>
           </DialogFooter>
