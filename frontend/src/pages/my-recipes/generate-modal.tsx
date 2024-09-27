@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label";
 import { useUser } from "@clerk/clerk-react";
 import { useState } from "react";
 import { Recipe } from "./myRecipes";
+import { toast } from "sonner";
 
 type FormData = {
   ingredients: string[] | null;
@@ -98,7 +99,6 @@ export function GenerateModal({
       });
 
       if (!response.ok) {
-        // If the response status is not OK, throw an error
         const errorData = await response.json();
         throw new Error(errorData.detail || "Failed to generate recipe");
       }
@@ -106,11 +106,20 @@ export function GenerateModal({
       const data = await response.json();
       const newRecipe: Recipe = data.data;
       setRecipes([newRecipe, ...recipes]);
-
-      // Handle the data (e.g., update state, display the recipe)
+      toast("I Successfully generated a recipe", {
+        style: {
+          background: "#00C851",
+          color: "#fff",
+        },
+      });
     } catch (error) {
       console.error("Error generating recipe:", error);
-      // Optionally, you can set an error state to display an error message to the user
+      toast("Failed to generate recipe", {
+        style: {
+          background: "#FF4444",
+          color: "#fff",
+        },
+      });
     } finally {
       setLoadingGenerate(false);
     }

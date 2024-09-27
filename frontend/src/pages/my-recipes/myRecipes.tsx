@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import CardSkeleton from "../../components/ui/card-skeleton";
 import LoadingScreen from "@/components/loading-screen";
 import CardItem from "@/components/card-item";
+import { toast } from "sonner";
 
 export type CookingStep = {
   step_number: number;
@@ -44,9 +45,22 @@ export default function MyRecipes() {
           throw new Error("Network response was not ok");
         }
         const data = await response.json();
+        toast("I Successfully fetched your recipes", {
+          style: {
+            background: "#00C851",
+            color: "#fff",
+          },
+        })
+    
         setRecipes(data.data);
       } catch (error) {
         console.error("Failed to fetch recipes:", error);
+        toast("Failed to fetch your recipes", {
+          style: {
+            background: "#FF4444",
+            color: "#fff",
+          },
+        });
       } finally {
         setLoading(false);
       }

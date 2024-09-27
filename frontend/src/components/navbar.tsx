@@ -1,12 +1,9 @@
 import { useState } from "react";
 // import { Button } from "./ui/button";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
-import { useAuth, useUser } from "@clerk/clerk-react";
 import { Button } from "./ui/button";
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { isSignedIn } = useAuth();
-  const { user } = useUser();
 
   return (
     <nav className="flex items-center justify-center bg-orange-200">

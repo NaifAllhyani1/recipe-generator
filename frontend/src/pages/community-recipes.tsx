@@ -2,6 +2,7 @@ import CardItem from "@/components/card-item";
 import { Recipe } from "./my-recipes/myRecipes";
 import { useEffect, useState } from "react";
 import CardSkeleton from "@/components/ui/card-skeleton";
+import { toast } from "sonner";
 
 export default function CommunityRecipes() {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
@@ -19,10 +20,22 @@ export default function CommunityRecipes() {
          }
 
          const data = await response.json();
+         toast("I Successfully fetched the community recipes", {
+          style: {
+            background: "#00C851",
+            color: "#fff",
+          },
+        });
          setRecipes(data.data);
 
        } catch (error) {
-         console.error("Failed to fetch recipes:", error);
+         console.error("Failed to fetch the community recipes:", error);
+         toast("Failed to fetch the community recipes", {
+          style: {
+            background: "#FF4444",
+            color: "#fff",
+          },
+        });
        } finally {
          setLoading(false);
        }
