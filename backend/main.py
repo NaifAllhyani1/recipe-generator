@@ -12,7 +12,7 @@ app = FastAPI()
 
 app.mount(
     "/images",
-    StaticFiles(directory=str(os.getenv("IMAGE_PATH"))),
+    StaticFiles(directory=os.getcwd().replace("\\", "/") + "/images"),
     name="images",
 )
 

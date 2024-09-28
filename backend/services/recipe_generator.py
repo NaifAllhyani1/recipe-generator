@@ -10,8 +10,8 @@ from models import Recipe
 from sqlmodel import Session
 import json
 import logging
-import os  
-import requests  
+import os
+import requests
 
 logger = logging.getLogger("my_app")
 from openai import OpenAI
@@ -19,7 +19,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-IMAGE_DIR = str(os.getenv("IMAGE_PATH"))
+IMAGE_DIR = os.getcwd().replace("\\", "/") + "/images"
 
 if not os.path.exists(IMAGE_DIR):
     os.makedirs(IMAGE_DIR)
@@ -60,9 +60,7 @@ async def generate_recipe_from_prompt(recipe, db: Session):
         logger.error(f"Failed to parse JSON: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Error parsing JSON: {str(e)}")
 
-    image_url = await generate_recipe_image(
-        recipe_data["dish_description"]
-    )  
+    image_url = await generate_recipe_image(recipe_data["dish_description"])
 
     db_recipe = Recipe(
         dish_name=recipe_data["dish_name"],
@@ -70,7 +68,7 @@ async def generate_recipe_from_prompt(recipe, db: Session):
         dish_description=recipe_data["dish_description"],
         ingredients=recipe_data["ingredients"],
         cooking_steps=recipe_data["cooking_steps"],
-        image_url=f"/images/{os.path.basename(image_url)}",  
+        image_url=f"/images/{os.path.basename(image_url)}",
         user_id=recipe.user_id,
     )
 
@@ -90,17 +88,15 @@ async def generate_recipe_image(description: str):
 
         image_url = response.data[0].url
 
-        image_path = os.path.join(
-            IMAGE_DIR, f"{description.replace(' ', '_')}.png"
-        )  
+        image_path = os.path.join(IMAGE_DIR, f"{description.replace(' ', '_')}.png")
 
         img_response = requests.get(image_url)
-        img_response.raise_for_status() 
+        img_response.raise_for_status()
 
         with open(image_path, "wb") as f:
             f.write(img_response.content)
 
-        return image_path  
+        return image_path
     except Exception as e:
         logger.error(f"Error generating image: {str(e)}")
         return None
