@@ -10,7 +10,3 @@ class RecipeRequest(BaseModel):
     user_id: str
 
 
-class UserRequest(BaseModel):
-    username: str
-    email: str
-    password: str
