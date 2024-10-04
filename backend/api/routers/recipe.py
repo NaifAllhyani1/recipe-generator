@@ -31,15 +31,22 @@ class RecipeResponse(BaseModel):
 class UserRecipesRequest(BaseModel):
     user_id: str
 
+
 class RecipeByUserResponse(BaseModel):
     status: str
     message: str
     data: List[Recipe]
 
+
 @router.post("/generate-recipe", response_model=RecipeResponse)
 async def generate_recipe_endpoint(
     recipe: schemas.RecipeRequest, db: Session = Depends(get_session)
 ):
+    if not recipe.user_id or len(recipe.user_id) < 5:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail={"status": "error", "message": "Invalid user_id"},
+        )
 
     res = await generate_recipe_from_prompt(recipe, db)
     insert_recipe_to_db(res, db)
@@ -85,7 +92,7 @@ async def get_recipes_by_user_id(
 ):
     print("user_id", user)
     try:
-        query = select(Recipe).where(Recipe.user_id == user.user_id) 
+        query = select(Recipe).where(Recipe.user_id == user.user_id)
         recipes = db.exec(query).all()
     except Exception as e:
         logger.error(f"Error in fetching recipes: {str(e)}")
@@ -93,7 +100,8 @@ async def get_recipes_by_user_id(
             status_code=500,
             detail={
                 "status": "error",
-                "message": "An unexpected error occurred while fetching the recipes. Please try again later."+str(e),
+                "message": "An unexpected error occurred while fetching the recipes. Please try again later."
+                + str(e),
             },
         )
 
