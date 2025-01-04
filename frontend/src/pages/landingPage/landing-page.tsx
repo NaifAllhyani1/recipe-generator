@@ -10,6 +10,8 @@ export default function LandingPage() {
       <Featurs />
       <StartCoking />
       <Footer />
+      <h1>hello</h1>
     </div>
+  
   );
 }
